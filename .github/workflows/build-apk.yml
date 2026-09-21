@@ -41,14 +41,14 @@ jobs:
         working-directory: SEEN_REAL_v0.3.2
         run: npx expo prebuild --platform android --non-interactive
 
-      - name: Build Android APK
+      - name: Build standalone Android APK
         working-directory: SEEN_REAL_v0.3.2/android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleRelease --no-daemon
 
       - name: Upload SEEN APK
         uses: actions/upload-artifact@v4
         with:
-          name: SEEN-Android-APK
-          path: SEEN_REAL_v0.3.2/android/app/build/outputs/apk/debug/app-debug.apk
+          name: SEEN-Android-APK-RELEASE
+          path: SEEN_REAL_v0.3.2/android/app/build/outputs/apk/release/app-release.apk
