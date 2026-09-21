@@ -1,0 +1,54 @@
+name: Build SEEN APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get SEEN
+        uses: actions/checkout@v4
+
+      - name: Unpack SEEN project
+        run: |
+          unzip -o SEEN_REAL_v0.3.2.zip
+          ls -la SEEN_REAL_v0.3.2
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install dependencies
+        working-directory: SEEN_REAL_v0.3.2
+        run: npm install
+
+      - name: Create Android project
+        working-directory: SEEN_REAL_v0.3.2
+        run: npx expo prebuild --platform android --non-interactive
+
+      - name: Build Android APK
+        working-directory: SEEN_REAL_v0.3.2/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload SEEN APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: SEEN-Android-APK
+          path: SEEN_REAL_v0.3.2/android/app/build/outputs/apk/debug/app-debug.apk
