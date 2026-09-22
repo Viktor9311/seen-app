@@ -33,6 +33,14 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install required Android tools
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager "cmake;3.22.1"
+
       - name: Install dependencies
         working-directory: SEEN_REAL_v0.3.5
         run: npm install
