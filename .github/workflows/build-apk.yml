@@ -19,8 +19,8 @@ jobs:
 
       - name: Unpack SEEN project
         run: |
-          unzip -o SEEN_REAL_v0.3.2.zip
-          ls -la SEEN_REAL_v0.3.2
+          unzip -o SEEN_REAL_v0.3.3.zip
+          ls -la SEEN_REAL_v0.3.3
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -34,15 +34,15 @@ jobs:
           java-version: "17"
 
       - name: Install dependencies
-        working-directory: SEEN_REAL_v0.3.2
+        working-directory: SEEN_REAL_v0.3.3
         run: npm install
 
       - name: Create Android project
-        working-directory: SEEN_REAL_v0.3.2
+        working-directory: SEEN_REAL_v0.3.3
         run: npx expo prebuild --platform android --non-interactive
 
       - name: Build standalone Android APK
-        working-directory: SEEN_REAL_v0.3.2/android
+        working-directory: SEEN_REAL_v0.3.3/android
         run: |
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon
@@ -51,4 +51,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SEEN-Android-APK-RELEASE
-          path: SEEN_REAL_v0.3.2/android/app/build/outputs/apk/release/app-release.apk
+          path: SEEN_REAL_v0.3.3/android/app/build/outputs/apk/release/app-release.apk
