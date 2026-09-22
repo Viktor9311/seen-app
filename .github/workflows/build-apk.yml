@@ -33,13 +33,13 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install required Android tools
+      - name: Install CMake
         run: |
-          yes | sdkmanager --licenses || true
-          sdkmanager "cmake;3.22.1"
+          echo "Android SDK: $ANDROID_SDK_ROOT"
+          SDKMANAGER=$(find "$ANDROID_SDK_ROOT/cmdline-tools" -type f -name sdkmanager | head -n 1)
+          echo "Using sdkmanager: $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+          "$SDKMANAGER" "cmake;3.22.1"
 
       - name: Install dependencies
         working-directory: SEEN_REAL_v0.3.5
